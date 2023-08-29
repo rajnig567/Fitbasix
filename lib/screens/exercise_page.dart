@@ -57,7 +57,7 @@ class _ExercisePageState extends State<ExercisePage> {
     VoidCallback? onTap,
   }) {
     return GestureDetector(
-      onTap: () {},
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(10),
         clipBehavior: Clip.antiAliasWithSaveLayer,
