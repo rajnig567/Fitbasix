@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fitbasix/utils/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ExerciseDetailPage extends StatefulWidget {
   const ExerciseDetailPage({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Exercise',
+          'Exercise Detail',
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -27,7 +28,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
           children: [
             CachedNetworkImage(
               imageUrl: 'https://api.exercisedb.io/image/pWmCmkhq8x57vV',
-              height: context.height * 0.35,
+              height: Get.height * 0.35,
             ),
             20.heightSizedBox,
             detailTile(title: 'Name', subTitle: 'subTitle'),
