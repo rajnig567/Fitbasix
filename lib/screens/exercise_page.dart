@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fitbasix/controller/exercise_controller.dart';
 import 'package:fitbasix/screens/exercise_detail_page.dart';
-import 'package:fitbasix/utils/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../model/exercise_model_entity.dart';
 
 class ExercisePage extends StatefulWidget {
   const ExercisePage({Key? key}) : super(key: key);
@@ -11,6 +14,15 @@ class ExercisePage extends StatefulWidget {
 }
 
 class _ExercisePageState extends State<ExercisePage> {
+  final ExerciseController _controller =
+      Get.put<ExerciseController>(ExerciseController());
+
+  @override
+  void initState() {
+    _controller.getExerciseList();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,31 +34,29 @@ class _ExercisePageState extends State<ExercisePage> {
           ),
         ),
       ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: 10,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-          childAspectRatio: context.width / (context.height / 2),
-        ),
-        itemBuilder: (_, index) {
-          return exerciseTile(
-            image: 'https://api.exercisedb.io/image/pWmCmkhq8x57vV',
-            title: '3/4 sit-up',
-            type: 'abs',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const ExerciseDetailPage(),
-                ),
-              );
-            },
-          );
-        },
-      ),
+      body: Obx(() {
+        return GridView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: _controller.exerciseList.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 16,
+            crossAxisSpacing: 16,
+            childAspectRatio: Get.width / (Get.height / 1.8),
+          ),
+          itemBuilder: (_, index) {
+            ExerciseModelEntity model = _controller.exerciseList[index];
+            return exerciseTile(
+              image: model.gifUrl ?? '',
+              title: model.name ?? '',
+              type: model.target ?? '',
+              onTap: () {
+                Get.to(const ExerciseDetailPage());
+              },
+            );
+          },
+        );
+      }),
     );
   }
 
@@ -79,11 +89,14 @@ class _ExercisePageState extends State<ExercisePage> {
             Align(
               child: CachedNetworkImage(
                 imageUrl: image,
-                height: context.height * 0.13,
+                height: Get.height * 0.13,
               ),
             ),
             Text(
               title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
