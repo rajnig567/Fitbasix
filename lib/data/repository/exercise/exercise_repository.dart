@@ -19,4 +19,14 @@ class ExerciseRepository extends IExerciseRepository {
     );
   }
 
+  @override
+  Future<ExerciseModelEntity> getExerciseFromID({String? id}) async {
+    final Result<ExerciseModelEntity> result = await source.getExerciseFromID(id: id);
+
+    return result.fold(
+          (ExerciseModelEntity? data) => data!,
+          (Exception exception) => throw exception,
+    );
+  }
+
 }

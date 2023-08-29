@@ -34,29 +34,51 @@ class _ExercisePageState extends State<ExercisePage> {
           ),
         ),
       ),
-      body: Obx(() {
-        return GridView.builder(
-          padding: const EdgeInsets.all(16),
-          itemCount: _controller.exerciseList.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 16,
-            crossAxisSpacing: 16,
-            childAspectRatio: Get.width / (Get.height / 1.8),
-          ),
-          itemBuilder: (_, index) {
-            ExerciseModelEntity model = _controller.exerciseList[index];
-            return exerciseTile(
-              image: model.gifUrl ?? '',
-              title: model.name ?? '',
-              type: model.target ?? '',
-              onTap: () {
-                Get.to(const ExerciseDetailPage());
-              },
+      body: Obx(
+        () {
+          if (!_controller.isLoading.value) {
+            if (_controller.exerciseList.isEmpty) {
+              return const Center(
+                child: Text(
+                  'No data found!!!',
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+              );
+            } else {
+              return GridView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: _controller.exerciseList.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  childAspectRatio: Get.width / (Get.height / 1.8),
+                ),
+                itemBuilder: (_, index) {
+                  ExerciseModelEntity model = _controller.exerciseList[index];
+                  return exerciseTile(
+                    image: model.gifUrl ?? '',
+                    title: model.name ?? '',
+                    type: model.target ?? '',
+                    onTap: () {
+                      _controller.exercise.value = ExerciseModelEntity();
+                      Get.to(() => ExerciseDetailPage(
+                            id: model.id ?? '',
+                          ));
+                    },
+                  );
+                },
+              );
+            }
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
             );
-          },
-        );
-      }),
+          }
+        },
+      ),
     );
   }
 

@@ -22,4 +22,13 @@ class AppDatasource extends IAppDatasource {
     );
   }
 
+  @override
+  Future<Result<ExerciseModelEntity>> getExerciseFromID({String? id}) async {
+    Result result = await client.getAPICall(url: '${APIConstants.exercises}/exercise/$id');
+    return NetworkResult(
+      data: ExerciseModelEntity.fromJson(jsonDecode(result.data)),
+      exception: result.exception,
+    );
+  }
+
 }

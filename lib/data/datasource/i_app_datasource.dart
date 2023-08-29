@@ -4,4 +4,5 @@ import '../../utils/helpers/api/result.dart';
 
 abstract class IAppDatasource{
   Future<Result<List<ExerciseModelEntity>>> getExerciseList();
+  Future<Result<ExerciseModelEntity>> getExerciseFromID({String? id});
 }
