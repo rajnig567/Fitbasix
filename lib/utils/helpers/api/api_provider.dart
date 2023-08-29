@@ -14,8 +14,8 @@ class APIProvider {
     dioOptions.receiveTimeout = const Duration(milliseconds: 200000);
 
     dioOptions.headers = {
-     'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com',
-      'X-RapidAPI-Key': 'f52a0f64femsh4bafd913a76d58ap1a6903jsn13e3d61f4317'
+     'X-RapidAPI-Host': APIConstants.apiHost,
+      'X-RapidAPI-Key': APIConstants.secretKey
     };
 
     _dio = Dio(dioOptions);
